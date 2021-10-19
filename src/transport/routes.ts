@@ -12,6 +12,8 @@ const cache: Cache = Cache.getInstance(86400);
 };
 
 export const setItem = (req: Request, res: Response): void => {
+  console.log({body: req.body});
+  console.log({params: req.params});
   const item = cache.set(req.body.k, req.body.v);
   res.json(_standardResponse());
 };
@@ -31,7 +33,7 @@ export const getCacheLength = (req: Request, res: Response): void => {
   res.json(_standardResponse({size: item}));
 };
 
-const _standardResponse = (data?: CacheItem["value"], status: boolean = true, error?: {message: string, code: number}): {success: boolean, payload?: any, error?: any} => {
+const _standardResponse = (data?: CacheItem["value"], status: boolean = true, error: {message: string, code: number} | boolean  = false): {success: boolean, payload?: any, error?: any} => {
   return {
     success: status,
     payload: data,

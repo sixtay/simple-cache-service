@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import lusca from "lusca";
 
 // Controllers (route handlers)
-import * as homeController from "./transport/home";
+import * as transport from "./transport/routes";
 
 
 // Create Express server
@@ -21,11 +21,10 @@ app.use(lusca.xssProtection(true));
 /**
  * Primary app routes.
  */
-app.get("/", homeController.index);
-
-/**
- * API examples routes.
- */
-app.get("/api", homeController.index);
+app.post("/get", transport.getItem);
+app.post("/set", transport.setItem);
+app.post("/delete", transport.deleteItem);
+app.post("/flush", transport.flush);
+app.post("/size", transport.getCacheLength);
 
 export default app;
