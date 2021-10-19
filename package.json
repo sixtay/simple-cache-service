@@ -1,12 +1,12 @@
 {
-    "name": "express-typescript-starter",
+    "name": "simple-cache-service",
     "version": "0.1.0",
-    "description": "A starting point for Node.js express apps with TypeScript",
+    "description": "A simple caching service available over http",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Microsoft/TypeScript-Node-Starter"
+        "url": "https://github.com/sixtay/simple-cache-service"
     },
-    "author": "Bowden Kelly",
+    "author": "Chukwuka Nnorukah",
     "license": "MIT",
     "scripts": {
         "build-sass": "sass src/public/css/main.scss dist/public/css/main.css",
