@@ -12,14 +12,12 @@ const cache: Cache = Cache.getInstance(86400);
 };
 
 export const setItem = (req: Request, res: Response): void => {
-  console.log({body: req.body});
-  console.log({params: req.params});
   const item = cache.set(req.body.k, req.body.v);
   res.json(_standardResponse());
 };
 
 export const deleteItem = (req: Request, res: Response): void => {
-  const item = cache.get(req.body.k);
+  const item = cache.delete(req.body.k);
   res.json(item);
 };
 

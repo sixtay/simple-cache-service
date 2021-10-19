@@ -24,7 +24,7 @@ app.use(lusca.xssProtection(true));
 app.post("/get", transport.getItem);
 app.post("/set", transport.setItem);
 app.post("/delete", transport.deleteItem);
-app.post("/flush", transport.flush);
-app.post("/size", transport.getCacheLength);
+app.get("/flush", transport.flush);
+app.get("/size", transport.getCacheLength);
 
 export default app;

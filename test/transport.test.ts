@@ -2,32 +2,18 @@ import request from "supertest";
 import app from "../src/app";
 import { expect} from "chai";
 
-describe("POST /get", () => {
-    it("should return false from assert when no message is found", (done) => {
-        request(app).post("/get")
-            .field("k", "John Doe")
-            .end(function(err, res) {
-                expect(res.error).to.be.false;
-                done();
-            })
-            .expect(302);
-    });
-});
-
 describe("POST /set", () => {
-    it("should return false from assert when no message is found", (done) => {
+    it("should return get set an item when a kv pair is posted to it", (done) => {
         request(app).post("/set")
-            .field("k", "John Doe")
-            .field("v", "john@me.com")
+            .send({k: "jd", v: "John Doe"})
             .end(function(err, res) {
                 expect(res.error).to.be.false;
                 done();
             })
             .expect(302);
         request(app).post("/get")
-            .field("k", "John Doe")
+            .send({k: "jd"})
             .end(function(err, res) {
-                console.log({data: res.body});
                 expect(res.body).to.have.property("success", true);
                 done();
             })
@@ -37,22 +23,33 @@ describe("POST /set", () => {
 });
 
 describe("POST /delete", () => {
-    it("should return false from assert when no message is found", (done) => {
-        request(app).post("/delete")
-            .field("k", "John Doe")
+    it("should delete an item in a key", (done) => {
+        request(app).post("/set")
+            .send({k: "jd", v: "John Doe"})
             .end(function(err, res) {
                 expect(res.error).to.be.false;
                 done();
             })
             .expect(302);
-    });
-});
-
-describe("POST /flush", () => {
-    it("should return false from assert when no message is found", (done) => {
-        request(app).post("/flush")
+        request(app).post("/get")
+            .send({k: "jd"})
+            .end(function(err, res) {
+                expect(res.body.payload).to.have.property("value", "John Doe");
+                done();
+            })
+            .expect(302);
+        request(app).post("/delete")
+            .send({k: "jd"})
             .end(function(err, res) {
                 expect(res.error).to.be.false;
+                done();
+            })
+            .expect(302);
+        request(app).post("/get")
+            .send({k: "jd"})
+            .end(function(err, res) {
+                expect(res.error).to.be.false;
+                expect(res.body.payload).to.have.property("value", null);
                 done();
             })
             .expect(302);
@@ -60,12 +57,79 @@ describe("POST /flush", () => {
 });
 
 describe("POST /size", () => {
-    it("should return false from assert when no message is found", (done) => {
-        request(app).post("/size")
-            .field("name", "John Doe")
-            .field("email", "john@me.com")
+    it("should return return the size of the cache", (done) => {
+        request(app).post("/set")
+            .send({k: "jd1", v: "John Doe"})
             .end(function(err, res) {
                 expect(res.error).to.be.false;
+                done();
+            })
+            .expect(302);
+        request(app).post("/set")
+            .send({k: "jd2", v: "John Doe"})
+            .end(function(err, res) {
+                expect(res.error).to.be.false;
+                done();
+            })
+            .expect(302);
+        request(app).post("/set")
+            .send({k: "jd3", v: "John Doe"})
+            .end(function(err, res) {
+                expect(res.error).to.be.false;
+                done();
+            })
+            .expect(302);
+        request(app).get("/size")
+            .end(function(err, res) {
+                expect(res.error).to.be.false;
+                expect(res.body.payload).to.have.property("size", 3);
+                done();
+            })
+            .expect(302);
+
+    });
+});
+
+describe("POST /flush", () => {
+    it("should return empty every item in the cache", (done) => {
+        request(app).post("/set")
+            .send({k: "jd1", v: "John Doe"})
+            .end(function(err, res) {
+                expect(res.error).to.be.false;
+                done();
+            })
+            .expect(302);
+        request(app).post("/set")
+            .send({k: "jd2", v: "John Doe"})
+            .end(function(err, res) {
+                expect(res.error).to.be.false;
+                done();
+            })
+            .expect(302);
+        request(app).post("/set")
+            .send({k: "jd3", v: "John Doe"})
+            .end(function(err, res) {
+                expect(res.error).to.be.false;
+                done();
+            })
+            .expect(302);
+        request(app).get("/size")
+            .end(function(err, res) {
+                expect(res.error).to.be.false;
+                expect(res.body.payload).to.have.property("size", 3);
+                done();
+            })
+            .expect(302);
+        request(app).get("/flush")
+            .end(function(err, res) {
+                expect(res.error).to.be.false;
+                done();
+            })
+            .expect(302);
+        request(app).get("/size")
+            .end(function(err, res) {
+                expect(res.error).to.be.false;
+                expect(res.body.payload).to.have.property("size", 0);
                 done();
             })
             .expect(302);
