@@ -10,15 +10,19 @@ const cache: Cache = Cache.getInstance(86400);
   const item = cache.get(req.body.k);
   res.json(_standardResponse(item));
 };
+export const hasItem = (req: Request, res: Response): void => {
+  const item = cache.get(req.body.k);
+  res.json(_standardResponse(_standardResponse(item)));
+};
 
 export const setItem = (req: Request, res: Response): void => {
-  const item = cache.set(req.body.k, req.body.v);
+  cache.set(req.body.k, req.body.v);
   res.json(_standardResponse());
 };
 
 export const deleteItem = (req: Request, res: Response): void => {
   const item = cache.delete(req.body.k);
-  res.json(item);
+  res.json(_standardResponse(item));
 };
 
 export const flush = (req: Request, res: Response): void => {

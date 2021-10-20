@@ -46,6 +46,10 @@ export class Cache {
     this.cacheItems = {};
   }
 
+  public has(key: string): boolean {
+    return Object.keys(this.cacheItems).includes(key);
+  }
+
   public size(): number {
     return Object.values(this.cacheItems).length;
   }

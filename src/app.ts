@@ -21,7 +21,8 @@ app.use(lusca.xssProtection(true));
 /**
  * Primary app routes.
  */
-app.post("/get", transport.getItem);
+ app.post("/get", transport.getItem);
+ app.post("/has", transport.hasItem);
 app.post("/set", transport.setItem);
 app.post("/delete", transport.deleteItem);
 app.get("/flush", transport.flush);
